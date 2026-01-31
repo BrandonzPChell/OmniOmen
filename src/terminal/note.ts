@@ -1,6 +1,7 @@
 import { note as clackNote } from "@clack/prompts";
 import { visibleWidth } from "./ansi.js";
 import { stylePromptTitle } from "./prompt-style.js";
+import { theme } from "./theme.js";
 
 function splitLongWord(word: string, maxLen: number): string[] {
   if (maxLen <= 0) return [word];
@@ -16,10 +17,11 @@ function wrapLine(line: string, maxWidth: number): string[] {
   if (line.trim().length === 0) return [line];
   const match = line.match(/^(\s*)([-*\u2022]\s+)?(.*)$/);
   const indent = match?.[1] ?? "";
-  const bullet = match?.[2] ?? "";
+  const rawBullet = match?.[2] ?? "";
+  const bullet = rawBullet ? theme.accent(rawBullet) : "";
   const content = match?.[3] ?? "";
   const firstPrefix = `${indent}${bullet}`;
-  const nextPrefix = `${indent}${bullet ? " ".repeat(bullet.length) : ""}`;
+  const nextPrefix = `${indent}${rawBullet ? " ".repeat(visibleWidth(rawBullet)) : ""}`;
   const firstWidth = Math.max(10, maxWidth - visibleWidth(firstPrefix));
   const nextWidth = Math.max(10, maxWidth - visibleWidth(nextPrefix));
 

@@ -1,5 +1,6 @@
 import { visibleWidth } from "./ansi.js";
 import { displayString } from "../utils.js";
+import { theme } from "./theme.js";
 
 type Align = "left" | "right" | "center";
 
@@ -346,7 +347,7 @@ export function renderTable(opts: RenderTableOptions): string {
   const padStr = repeat(" ", padding);
 
   const renderRow = (record: Record<string, string>, isHeader = false) => {
-    const cells = columns.map((c) => (isHeader ? c.header : (record[c.key] ?? "")));
+    const cells = columns.map((c) => (isHeader ? theme.heading(c.header) : (record[c.key] ?? "")));
     const wrapped = cells.map((cell, i) => wrapLine(cell, contentWidthFor(i)));
     const height = Math.max(...wrapped.map((w) => w.length));
     const out: string[] = [];
