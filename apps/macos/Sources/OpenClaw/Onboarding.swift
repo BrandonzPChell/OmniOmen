@@ -166,16 +166,18 @@ struct OnboardingView: View {
         let expected: Bool
     }
 
+    @MainActor
     init(
         state: AppState = AppStateStore.shared,
         permissionMonitor: PermissionMonitor = .shared,
-        discoveryModel: GatewayDiscoveryModel = GatewayDiscoveryModel(
-            localDisplayName: InstanceIdentity.displayName,
-            filterLocalGateways: false))
+        discoveryModel: GatewayDiscoveryModel? = nil)
     {
         self.state = state
         self.permissionMonitor = permissionMonitor
-        self._gatewayDiscovery = State(initialValue: discoveryModel)
+        let discovery = discoveryModel ?? GatewayDiscoveryModel(
+            localDisplayName: InstanceIdentity.displayName,
+            filterLocalGateways: false)
+        self._gatewayDiscovery = State(initialValue: discovery)
         self._onboardingChatModel = State(
             initialValue: OpenClawChatViewModel(
                 sessionKey: "onboarding",

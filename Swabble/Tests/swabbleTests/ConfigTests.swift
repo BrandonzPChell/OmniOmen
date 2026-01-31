@@ -6,8 +6,8 @@ import Testing
 func configRoundTrip() throws {
     var cfg = SwabbleConfig()
     cfg.wake.word = "robot"
-    let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".json")
-    defer { try? FileManager.default.removeItem(at: url) }
+    let url = FileManager().temporaryDirectory.appendingPathComponent(UUID().uuidString + ".json")
+    defer { try? FileManager().removeItem(at: url) }
 
     try ConfigLoader.save(cfg, at: url)
     let loaded = try ConfigLoader.load(at: url)
@@ -18,6 +18,6 @@ func configRoundTrip() throws {
 @Test
 func configMissingThrows() {
     #expect(throws: ConfigError.missingConfig) {
-        _ = try ConfigLoader.load(at: FileManager.default.temporaryDirectory.appendingPathComponent("nope.json"))
+        _ = try ConfigLoader.load(at: FileManager().temporaryDirectory.appendingPathComponent("nope.json"))
     }
 }

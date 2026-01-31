@@ -8,9 +8,9 @@ public actor TranscriptsStore {
     private let fileURL: URL
 
     public init() {
-        let dir = FileManager.default.homeDirectoryForCurrentUser
+        let dir = FileManager().homeDirectoryForCurrentUser
             .appendingPathComponent("Library/Application Support/swabble", isDirectory: true)
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        try? FileManager().createDirectory(at: dir, withIntermediateDirectories: true)
         fileURL = dir.appendingPathComponent("transcripts.log")
         if let data = try? Data(contentsOf: fileURL),
            let text = String(data: data, encoding: .utf8) {
@@ -33,7 +33,7 @@ public actor TranscriptsStore {
 extension String {
     private func appendLine(to url: URL) throws {
         let data = (self + "\n").data(using: .utf8) ?? Data()
-        if FileManager.default.fileExists(atPath: url.path) {
+        if FileManager().fileExists(atPath: url.path) {
             let handle = try FileHandle(forWritingTo: url)
             try handle.seekToEnd()
             try handle.write(contentsOf: data)

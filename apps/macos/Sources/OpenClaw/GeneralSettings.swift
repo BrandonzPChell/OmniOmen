@@ -5,13 +5,13 @@ import OpenClawKit
 import Observation
 import SwiftUI
 
+@MainActor
 struct GeneralSettings: View {
     @Bindable var state: AppState
     @AppStorage(cameraEnabledKey) private var cameraEnabled: Bool = false
     private let healthStore = HealthStore.shared
     private let gatewayManager = GatewayProcessManager.shared
-    @State private var gatewayDiscovery = GatewayDiscoveryModel(
-        localDisplayName: InstanceIdentity.displayName)
+    @State private var gatewayDiscovery: GatewayDiscoveryModel
     @State private var gatewayStatus: GatewayEnvironmentStatus = .checking
     @State private var remoteStatus: RemoteStatus = .idle
     @State private var showRemoteAdvanced = false
@@ -312,6 +312,12 @@ struct GeneralSettings: View {
         case .disconnected: "Disconnected"
         case let .degraded(msg): msg
         }
+    }
+
+    @MainActor
+    init(state: AppState) {
+        self.state = state
+        self._gatewayDiscovery = State(initialValue: GatewayDiscoveryModel(localDisplayName: InstanceIdentity.displayName))
     }
 
     @ViewBuilder
