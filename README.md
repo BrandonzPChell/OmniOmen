@@ -73,6 +73,21 @@ openclaw agent --message "Ship checklist" --thinking high
 
 Upgrading? [Updating guide](https://docs.openclaw.ai/install/updating) (and run `openclaw doctor`).
 
+## Using Aider with Gemini
+
+If you use [aider](https://aider.chat/) for development, you can use Google Gemini (which has a generous free tier) by setting `GEMINI_API_KEY` in your `.env` file and running:
+
+```bash
+docker run -it \
+  --user $(id -u):$(id -g) \
+  --volume $(pwd):/app \
+  --env-file .env \
+  paulgauthier/aider \
+  --model gemini/gemini-1.5-flash
+```
+
+Use `gemini/gemini-1.5-pro` for more complex logic (note the stricter rate limits on the free tier).
+
 ## Development channels
 
 - **stable**: tagged releases (`vYYYY.M.D` or `vYYYY.M.D-<patch>`), npm dist-tag `latest`.
