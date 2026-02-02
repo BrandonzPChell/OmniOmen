@@ -260,7 +260,7 @@ public actor GatewayChannelActor {
     }
 
     private func sendConnect() async throws {
-        let platform = InstanceIdentity.platformString
+        let platform = await InstanceIdentity.platformString
         let primaryLocale = Locale.preferredLanguages.first ?? Locale.current.identifier
         let options = self.connectOptions ?? GatewayConnectOptions(
             role: "operator",
@@ -270,8 +270,8 @@ public actor GatewayChannelActor {
             permissions: [:],
             clientId: "openclaw-macos",
             clientMode: "ui",
-            clientDisplayName: InstanceIdentity.displayName)
-        let clientDisplayName = options.clientDisplayName ?? InstanceIdentity.displayName
+            clientDisplayName: await InstanceIdentity.displayName)
+        let clientDisplayName = options.clientDisplayName ?? (await InstanceIdentity.displayName)
         let clientId = options.clientId
         let clientMode = options.clientMode
         let role = options.role
@@ -287,7 +287,7 @@ public actor GatewayChannelActor {
             "mode": ProtoAnyCodable(clientMode),
             "instanceId": ProtoAnyCodable(InstanceIdentity.instanceId),
         ]
-        client["deviceFamily"] = ProtoAnyCodable(InstanceIdentity.deviceFamily)
+        client["deviceFamily"] = ProtoAnyCodable(await InstanceIdentity.deviceFamily)
         if let model = InstanceIdentity.modelIdentifier {
             client["modelIdentifier"] = ProtoAnyCodable(model)
         }

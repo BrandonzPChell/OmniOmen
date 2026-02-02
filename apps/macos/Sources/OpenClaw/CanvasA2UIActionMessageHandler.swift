@@ -4,6 +4,7 @@ import OpenClawKit
 import Foundation
 import WebKit
 
+@MainActor
 final class CanvasA2UIActionMessageHandler: NSObject, WKScriptMessageHandler {
     static let messageName = "openclawCanvasA2UIAction"
     static let allMessageNames = [messageName]

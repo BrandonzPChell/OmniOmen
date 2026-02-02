@@ -62,6 +62,7 @@ final class PresenceReporter {
         Task { await self.push(reason: reason) }
     }
 
+    @MainActor
     private static func composePresenceSummary(mode: String, reason: String) -> String {
         let host = InstanceIdentity.displayName
         let ip = Self.primaryIPv4Address() ?? "ip-unknown"
@@ -135,6 +136,7 @@ final class PresenceReporter {
 
 #if DEBUG
 extension PresenceReporter {
+    @MainActor
     static func _testComposePresenceSummary(mode: String, reason: String) -> String {
         self.composePresenceSummary(mode: mode, reason: reason)
     }

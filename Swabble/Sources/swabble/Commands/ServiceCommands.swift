@@ -15,7 +15,7 @@ private enum LaunchdHelper {
     static let label = "com.swabble.agent"
 
     static var plistURL: URL {
-        FileManager.default
+        FileManager()
             .homeDirectoryForCurrentUser
             .appendingPathComponent("Library/LaunchAgents/\(label).plist")
     }
@@ -32,7 +32,7 @@ private enum LaunchdHelper {
     }
 
     static func removePlist() throws {
-        try? FileManager.default.removeItem(at: plistURL)
+        try? FileManager().removeItem(at: plistURL)
     }
 }
 
@@ -68,7 +68,7 @@ struct ServiceStatus: ParsableCommand {
     }
 
     mutating func run() async throws {
-        if FileManager.default.fileExists(atPath: LaunchdHelper.plistURL.path) {
+        if FileManager().fileExists(atPath: LaunchdHelper.plistURL.path) {
             print("plist present at \(LaunchdHelper.plistURL.path)")
         } else {
             print("launchd plist not installed")

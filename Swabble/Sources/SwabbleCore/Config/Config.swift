@@ -46,7 +46,7 @@ public struct SwabbleConfig: Codable, Sendable {
     public var transcripts = Transcripts()
     public var speech = Speech()
 
-    public static let defaultPath = FileManager.default
+    public static let defaultPath = FileManager()
         .homeDirectoryForCurrentUser
         .appendingPathComponent(".config/swabble/config.json")
 
@@ -60,7 +60,7 @@ public enum ConfigError: Error {
 public enum ConfigLoader {
     public static func load(at path: URL?) throws -> SwabbleConfig {
         let url = path ?? SwabbleConfig.defaultPath
-        if !FileManager.default.fileExists(atPath: url.path) {
+        if !FileManager().fileExists(atPath: url.path) {
             throw ConfigError.missingConfig
         }
         let data = try Data(contentsOf: url)
@@ -70,7 +70,7 @@ public enum ConfigLoader {
     public static func save(_ config: SwabbleConfig, at path: URL?) throws {
         let url = path ?? SwabbleConfig.defaultPath
         let dir = url.deletingLastPathComponent()
-        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        try FileManager().createDirectory(at: dir, withIntermediateDirectories: true)
         let data = try JSONEncoder().encode(config)
         try data.write(to: url)
     }
